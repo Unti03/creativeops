@@ -1,0 +1,1767 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
+<style>
+/* ══════════════════════════════════════
+   CreativeOps Intelligence v1.0
+   Executive Dashboard — Clean Design
+══════════════════════════════════════ */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0F1C35;--blue:#1B6FD9;--blue-l:#EBF4FF;--blue-m:#60A5FA;--blue-d:#1E3A8A;
+  --cv:#7C3AED;--cv-l:#F5F3FF;--cv-s:#EDE9FE;
+  --gray-50:#F8FAFC;--gray-100:#F1F5F9;--gray-200:#E2E8F0;
+  --gray-400:#94A3B8;--gray-600:#475569;--gray-800:#1E293B;
+  --green:#10B981;--green-l:#ECFDF5;
+  --red:#EF4444;--red-l:#FEF2F2;
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08);
+  --shadow-md:0 4px 16px rgba(0,0,0,.1);
+  --shadow-lg:0 12px 40px rgba(0,0,0,.14);
+  --r:10px;--r-sm:6px;--r-lg:14px;
+}
+body,html{font-family:-apple-system,BlinkMacSystemFont,'Pretendard','Segoe UI',sans-serif;background:var(--gray-100);color:var(--gray-800);min-height:100vh}
+
+/* ── 진행 바 (상단 얇은 라인) ── */
+#prog-bar{position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,var(--blue),var(--blue-m));width:0;z-index:9999;transition:width .4s ease;pointer-events:none}
+
+/* ── 앱 셸 ── */
+.app{display:flex;flex-direction:column;height:100vh;overflow:hidden}
+
+/* ── 탑바 ── */
+.topbar{
+  height:52px;background:var(--navy);display:flex;align-items:center;
+  padding:0 20px;gap:16px;flex-shrink:0;
+  border-bottom:1px solid rgba(255,255,255,.07)
+}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+.logo-mark{
+  width:30px;height:30px;background:var(--blue);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:white;flex-shrink:0
+}
+.logo-text{font-size:13px;font-weight:600;color:white;letter-spacing:-.01em}
+.logo-sub{font-size:10px;color:rgba(255,255,255,.45);letter-spacing:.04em;text-transform:uppercase;font-weight:400}
+.topbar-divider{width:1px;height:22px;background:rgba(255,255,255,.1);flex-shrink:0}
+.analysis-chips{display:flex;gap:6px;align-items:center;flex:1}
+.analysis-chip{
+  display:flex;align-items:center;gap:5px;
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);
+  border-radius:6px;padding:4px 9px;font-size:10px;color:rgba(255,255,255,.7);
+  cursor:pointer;transition:all .2s
+}
+.analysis-chip:hover{background:rgba(255,255,255,.1);color:white}
+.analysis-chip.active{background:rgba(27,111,217,.3);border-color:var(--blue-m);color:white}
+.analysis-chip i{font-size:11px}
+.chip-close{font-size:10px;color:rgba(255,255,255,.35);cursor:pointer;margin-left:2px;line-height:1}
+.chip-close:hover{color:rgba(255,255,255,.7)}
+.chip-add{
+  background:transparent;border:1px dashed rgba(255,255,255,.2);
+  border-radius:6px;padding:4px 9px;font-size:10px;color:rgba(255,255,255,.4);
+  cursor:pointer;display:flex;align-items:center;gap:4px;transition:all .2s
+}
+.chip-add:hover{border-color:rgba(255,255,255,.5);color:rgba(255,255,255,.7)}
+.topbar-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.run-btn{
+  display:flex;align-items:center;gap:7px;
+  background:var(--blue);border:none;color:white;
+  padding:8px 16px;border-radius:8px;font-size:12px;font-weight:600;
+  cursor:pointer;transition:all .2s;white-space:nowrap
+}
+.run-btn:hover:not(:disabled){background:#1558B0;transform:translateY(-1px);box-shadow:0 4px 12px rgba(27,111,217,.4)}
+.run-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.run-btn.running{background:#1558B0}
+.admin-btn{
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  background:transparent;border:1px solid rgba(255,255,255,.12);
+  border-radius:8px;color:rgba(255,255,255,.45);cursor:pointer;font-size:14px;transition:all .2s
+}
+.admin-btn:hover{background:rgba(255,255,255,.08);color:white;border-color:rgba(255,255,255,.3)}
+
+/* ── 바디 레이아웃 ── */
+.body{display:flex;flex:1;overflow:hidden}
+
+/* ── 사이드바 ── */
+.sidebar{
+  width:220px;flex-shrink:0;background:white;
+  border-right:1px solid var(--gray-200);
+  display:flex;flex-direction:column;overflow-y:auto
+}
+.sidebar::-webkit-scrollbar{width:3px}
+.sidebar::-webkit-scrollbar-thumb{background:var(--gray-200)}
+.sb-section{padding:14px 14px;border-bottom:1px solid var(--gray-100)}
+.sb-section-lbl{
+  font-size:9px;font-weight:600;color:var(--gray-400);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px
+}
+/* 경쟁사 리스트 */
+.comp-list{display:flex;flex-direction:column;gap:2px}
+.comp-row{
+  display:flex;align-items:center;gap:8px;padding:7px 8px;
+  border-radius:var(--r-sm);cursor:pointer;transition:background .15s
+}
+.comp-row:hover{background:var(--gray-50)}
+.comp-row.active{background:var(--blue-l)}
+.comp-cb{
+  width:14px;height:14px;border:1.5px solid var(--gray-200);
+  border-radius:3px;flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;transition:all .15s
+}
+.comp-row.active .comp-cb{background:var(--blue);border-color:var(--blue)}
+.comp-cb i{font-size:9px;color:white;display:none}
+.comp-row.active .comp-cb i{display:block}
+.comp-name{font-size:12px;color:var(--gray-600);flex:1}
+.comp-row.active .comp-name{color:var(--gray-800);font-weight:500}
+/* 날짜 피커 */
+.date-row{display:flex;align-items:center;gap:6px}
+.date-inp{
+  flex:1;border:1px solid var(--gray-200);border-radius:var(--r-sm);
+  padding:6px 8px;font-size:10px;color:var(--gray-800);
+  background:white;outline:none;font-family:inherit;min-width:0
+}
+.date-inp:focus{border-color:var(--blue)}
+.date-sep{font-size:10px;color:var(--gray-400);flex-shrink:0}
+/* 상태 표시 */
+.status-area{padding:12px 14px;margin-top:auto}
+.status-dot-row{display:flex;align-items:center;gap:6px}
+.status-dot{width:6px;height:6px;border-radius:50%;background:var(--gray-200);flex-shrink:0}
+.status-dot.run{background:var(--blue);animation:pulse 1.2s infinite}
+.status-dot.ok{background:var(--green)}
+.status-dot.err{background:var(--red)}
+.status-txt{font-size:10px;color:var(--gray-400);font-weight:500}
+.status-txt.ok{color:var(--green)}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* ── 메인 콘텐츠 ── */
+.main{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:16px}
+.main::-webkit-scrollbar{width:4px}
+.main::-webkit-scrollbar-thumb{background:var(--gray-200);border-radius:2px}
+
+/* ── 섹션 헤더 ── */
+.sec-hd{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sec-hd-title{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em}
+.sec-divider{flex:1;height:1px;background:var(--gray-100)}
+
+/* ── KPI 배너 (수집 현황) ── */
+.kpi-banner{
+  background:white;border:1px solid var(--gray-200);border-radius:var(--r);
+  padding:14px 18px;display:flex;align-items:center;gap:0;
+  box-shadow:var(--shadow-sm);display:none
+}
+.kpi-banner.show{display:flex}
+.kpi-item{flex:1;text-align:center;position:relative}
+.kpi-item+.kpi-item::before{
+  content:'';position:absolute;left:0;top:20%;height:60%;
+  width:1px;background:var(--gray-100)
+}
+.kpi-icon{font-size:11px;color:var(--gray-400);margin-bottom:3px}
+.kpi-num{font-size:22px;font-weight:700;color:var(--gray-800);line-height:1;margin-bottom:2px}
+.kpi-num.blue{color:var(--blue)}
+.kpi-label{font-size:10px;color:var(--gray-400)}
+.kpi-sub{font-size:9px;color:var(--gray-400);margin-top:1px}
+.kpi-badge{display:inline-block;font-size:8px;padding:1px 5px;border-radius:3px;font-weight:600;margin-top:3px}
+.kpi-badge.real{background:var(--green-l);color:var(--green)}
+.kpi-badge.sim{background:#FFF7ED;color:#C2410C}
+
+/* ── AI 분석 3 카드 ── */
+.insight-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.insight-card{
+  background:white;border:1px solid var(--gray-200);border-radius:var(--r);
+  padding:16px;box-shadow:var(--shadow-sm);min-height:140px;
+  display:flex;flex-direction:column;gap:8px
+}
+.insight-card-hd{display:flex;align-items:center;gap:8px}
+.insight-icon{
+  width:28px;height:28px;border-radius:7px;
+  display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0
+}
+.insight-icon.strategy{background:#EFF6FF;color:var(--blue)}
+.insight-icon.perf{background:#F0FDF4;color:#059669}
+.insight-icon.action{background:var(--cv-l);color:var(--cv)}
+.insight-card-title{font-size:11px;font-weight:600;color:var(--gray-800)}
+.insight-card-body{font-size:11px;line-height:1.7;color:var(--gray-600);flex:1}
+.insight-card-body.placeholder{color:var(--gray-400);font-style:italic;font-size:10px}
+.action-list{list-style:none;display:flex;flex-direction:column;gap:6px}
+.action-item{display:flex;gap:7px;font-size:11px;color:var(--gray-600);line-height:1.5}
+.action-num{
+  width:16px;height:16px;background:var(--cv-s);color:var(--cv);
+  border-radius:50%;font-size:8px;font-weight:700;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px
+}
+.insight-loading{
+  display:flex;align-items:center;gap:8px;
+  color:var(--gray-400);font-size:11px
+}
+.insight-loading i{font-size:14px;color:var(--blue-m)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin .75s linear infinite}
+
+/* ── SB 초안 섹션 ── */
+.sb-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.sb-header-l{display:flex;align-items:center;gap:8px}
+.sb-header-title{font-size:11px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em}
+.cv-badge{font-size:8px;background:var(--cv-s);color:var(--cv);padding:2px 6px;border-radius:4px;font-weight:600}
+.cv-export-btn{
+  display:flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,var(--cv),#9333EA);
+  border:none;color:white;padding:7px 12px;border-radius:7px;
+  font-size:10px;font-weight:600;cursor:pointer;transition:all .2s
+}
+.cv-export-btn:hover{opacity:.88;transform:translateY(-1px)}
+.cv-export-ic{width:14px;height:14px;background:white;border-radius:3px;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:var(--cv);flex-shrink:0}
+
+/* ── SB 카드 ── */
+.sb-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.sb-card{
+  background:white;border:1px solid var(--gray-200);border-radius:var(--r);
+  overflow:hidden;box-shadow:var(--shadow-sm);
+  display:flex;flex-direction:column;transition:all .2s
+}
+.sb-card:hover{border-color:var(--blue-m);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+.sb-card-img{
+  height:120px;background:var(--gray-100);position:relative;overflow:hidden;flex-shrink:0
+}
+.sb-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .35s}
+.sb-card:hover .sb-card-img img{transform:scale(1.04)}
+.sb-card-img-ov{
+  position:absolute;inset:0;
+  background:linear-gradient(to bottom,transparent 35%,rgba(10,15,40,.6));
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding:8px;opacity:0;transition:opacity .2s
+}
+.sb-card:hover .sb-card-img-ov{opacity:1}
+.sb-canva-badge{font-size:8px;background:rgba(124,58,237,.88);color:white;padding:3px 7px;border-radius:4px;font-weight:600}
+.sb-edit-link{font-size:9px;background:rgba(255,255,255,.92);color:var(--cv);padding:3px 8px;border-radius:4px;text-decoration:none;display:flex;align-items:center;gap:3px;font-weight:500}
+.sb-dur-badge{position:absolute;top:7px;right:7px;font-size:8px;background:white;border:1px solid var(--gray-200);padding:2px 6px;border-radius:4px;color:var(--blue);font-weight:600;font-family:monospace}
+.sb-card-body{padding:12px;flex:1;display:flex;flex-direction:column;gap:4px}
+.sb-card-ver{font-size:8px;font-weight:700;color:var(--blue);text-transform:uppercase;letter-spacing:.12em}
+.sb-card-title{font-size:12px;font-weight:600;color:var(--gray-800)}
+.sb-card-desc{font-size:10px;color:var(--gray-500);line-height:1.6;white-space:pre-line;flex:1;margin-top:2px}
+.sb-card-chips{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.sb-card-chip{font-size:8px;padding:2px 6px;border-radius:4px;background:var(--blue-l);color:var(--blue-d);font-weight:500}
+.sb-card-footer{padding:9px 12px;border-top:1px solid var(--gray-100);display:flex;gap:6px}
+.sb-copy-btn{flex:1;padding:6px;border-radius:6px;background:var(--gray-50);border:1px solid var(--gray-200);font-size:9px;cursor:pointer;color:var(--gray-500);display:flex;align-items:center;justify-content:center;gap:3px;transition:all .15s;font-weight:500}
+.sb-copy-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
+.sb-copy-btn.copied{background:var(--blue-l);border-color:var(--blue);color:var(--blue)}
+.sb-canva-btn{flex:2;padding:6px;border-radius:6px;background:linear-gradient(135deg,var(--cv),#9333EA);border:none;color:white;font-size:9px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px}
+.sb-canva-btn:hover{opacity:.88}
+.sb-canva-ic{width:12px;height:12px;background:white;border-radius:2px;font-size:8px;font-weight:700;color:var(--cv);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+
+/* ── 빈 상태 플레이스홀더 ── */
+.empty-placeholder{
+  background:white;border:1px dashed var(--gray-200);border-radius:var(--r);
+  padding:32px;text-align:center;color:var(--gray-400)
+}
+.empty-placeholder i{font-size:28px;display:block;margin-bottom:8px;color:var(--gray-200)}
+.empty-placeholder p{font-size:11px;line-height:1.6}
+
+/* ── Canva 모달 ── */
+.cv-ov{display:none;position:fixed;inset:0;background:rgba(10,15,40,.65);z-index:500;align-items:flex-start;justify-content:center;padding-top:60px}
+.cv-ov.on{display:flex}
+.cv-modal{
+  background:white;border-radius:var(--r-lg);width:480px;max-width:96%;
+  max-height:82vh;display:flex;flex-direction:column;
+  box-shadow:var(--shadow-lg);overflow:hidden
+}
+.cv-modal-hd{padding:16px 20px;border-bottom:1px solid var(--gray-100);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.cv-modal-hd-l{display:flex;align-items:center;gap:10px}
+.cv-modal-ic{width:32px;height:32px;background:var(--cv-s);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.cv-modal-ic i{font-size:16px;color:var(--cv)}
+.cv-modal-title{font-size:13px;font-weight:600;color:var(--gray-800)}
+.cv-modal-sub{font-size:10px;color:var(--gray-400);margin-top:1px}
+.cv-modal-close{font-size:18px;color:var(--gray-400);cursor:pointer;line-height:1}
+.cv-modal-close:hover{color:var(--gray-800)}
+.cv-modal-body{padding:16px 20px;overflow-y:auto;flex:1}
+.cv-sec-label{font-size:9px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;margin-top:14px}
+.cv-sec-label:first-child{margin-top:0}
+.cv-tmpl-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px}
+.cv-tmpl-btn{
+  display:flex;align-items:center;gap:8px;padding:10px 12px;
+  border:1px solid var(--gray-200);border-radius:8px;text-decoration:none;
+  transition:all .2s;cursor:pointer
+}
+.cv-tmpl-btn:hover{border-color:var(--cv);background:var(--cv-l)}
+.cv-tmpl-em{font-size:16px;flex-shrink:0}
+.cv-tmpl-lbl{font-size:10px;font-weight:500;color:var(--gray-800)}
+.cv-tmpl-sub{font-size:9px;color:var(--gray-400)}
+.cv-brief-box{background:var(--gray-50);border:1px solid var(--gray-200);border-radius:8px;padding:12px;position:relative}
+.cv-brief-txt{font-size:10px;line-height:1.75;color:var(--gray-600);white-space:pre-wrap;font-family:monospace}
+.cv-copy-btn{position:absolute;top:8px;right:8px;display:flex;align-items:center;gap:3px;padding:4px 9px;border-radius:5px;background:white;border:1px solid var(--gray-200);font-size:9px;cursor:pointer;color:var(--gray-500);font-weight:500}
+.cv-copy-btn:hover{border-color:var(--cv);color:var(--cv)}
+.cv-copy-btn.copied{background:var(--cv-s);border-color:var(--cv);color:var(--cv)}
+.cv-modal-ft{padding:12px 20px;border-top:1px solid var(--gray-100);display:flex;justify-content:flex-end;background:var(--gray-50);flex-shrink:0}
+.btn-close{padding:7px 16px;border-radius:7px;background:white;border:1px solid var(--gray-200);color:var(--gray-600);font-size:11px;cursor:pointer;font-weight:500}
+.btn-close:hover{border-color:var(--gray-400)}
+
+/* ── 분석 분리선 ── */
+.analysis-sep{height:1px;background:var(--gray-100);margin:0 -20px}
+
+/* ══════════════════════════════════════
+   ADMIN SLIDE PANEL
+══════════════════════════════════════ */
+.admin-backdrop{
+  display:none;position:fixed;inset:0;background:rgba(10,15,40,.4);
+  z-index:800;backdrop-filter:blur(1px)
+}
+.admin-backdrop.open{display:block}
+.admin-panel{
+  position:fixed;top:0;right:0;bottom:0;width:440px;
+  background:white;box-shadow:-8px 0 40px rgba(0,0,0,.14);
+  z-index:900;display:flex;flex-direction:column;
+  transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)
+}
+.admin-panel.open{transform:translateX(0)}
+
+/* 어드민 헤더 */
+.admin-hd{
+  padding:16px 20px;border-bottom:1px solid var(--gray-100);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
+  background:var(--navy)
+}
+.admin-hd-l{display:flex;align-items:center;gap:10px}
+.admin-hd-ic{
+  width:30px;height:30px;background:rgba(255,255,255,.12);
+  border-radius:7px;display:flex;align-items:center;justify-content:center
+}
+.admin-hd-ic i{font-size:15px;color:white}
+.admin-hd-title{font-size:13px;font-weight:600;color:white}
+.admin-hd-sub{font-size:9px;color:rgba(255,255,255,.45);margin-top:1px;letter-spacing:.04em;text-transform:uppercase}
+.admin-close{
+  width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  background:rgba(255,255,255,.08);border-radius:6px;
+  color:rgba(255,255,255,.6);cursor:pointer;font-size:14px;transition:all .15s
+}
+.admin-close:hover{background:rgba(255,255,255,.16);color:white}
+
+/* 탭 바 */
+.admin-tabs{
+  display:flex;border-bottom:1px solid var(--gray-100);
+  background:var(--gray-50);flex-shrink:0;overflow-x:auto
+}
+.admin-tabs::-webkit-scrollbar{display:none}
+.admin-tab{
+  padding:10px 14px;font-size:10px;font-weight:500;color:var(--gray-400);
+  cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;
+  display:flex;align-items:center;gap:5px;transition:all .15s
+}
+.admin-tab:hover{color:var(--gray-600)}
+.admin-tab.active{color:var(--blue);border-bottom-color:var(--blue);background:white}
+.admin-tab i{font-size:12px}
+
+/* 탭 콘텐츠 */
+.admin-body{flex:1;overflow-y:auto;padding:20px}
+.admin-body::-webkit-scrollbar{width:3px}
+.admin-body::-webkit-scrollbar-thumb{background:var(--gray-200)}
+.admin-section{margin-bottom:24px}
+.admin-section:last-child{margin-bottom:0}
+.admin-section-title{
+  font-size:10px;font-weight:700;color:var(--gray-400);
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:10px;
+  display:flex;align-items:center;gap:6px
+}
+.admin-section-title i{font-size:13px}
+
+/* 폼 요소 */
+.admin-field{margin-bottom:12px}
+.admin-label{font-size:10px;font-weight:500;color:var(--gray-600);margin-bottom:4px;display:flex;align-items:center;gap:5px}
+.admin-label-badge{font-size:8px;background:var(--green-l);color:var(--green);padding:1px 5px;border-radius:3px;font-weight:600}
+.admin-input{
+  width:100%;border:1px solid var(--gray-200);border-radius:7px;
+  padding:8px 11px;font-size:11px;color:var(--gray-800);
+  background:white;outline:none;font-family:inherit;transition:border-color .15s
+}
+.admin-input:focus{border-color:var(--blue)}
+.admin-input::placeholder{color:var(--gray-400);font-size:10px}
+.admin-input-row{display:flex;gap:6px}
+.admin-input-row .admin-input{flex:1}
+.admin-save-btn{
+  padding:7px 14px;border-radius:7px;background:var(--blue);border:none;
+  color:white;font-size:10px;font-weight:600;cursor:pointer;white-space:nowrap;transition:all .15s
+}
+.admin-save-btn:hover{background:var(--blue-d)}
+.admin-save-btn.saved{background:var(--green)}
+.admin-notice{
+  font-size:10px;color:var(--gray-400);line-height:1.6;
+  padding:8px 11px;background:var(--gray-50);border-radius:6px;
+  border-left:3px solid var(--gray-200);margin-top:6px
+}
+.admin-select{
+  width:100%;border:1px solid var(--gray-200);border-radius:7px;
+  padding:8px 11px;font-size:11px;color:var(--gray-800);
+  background:white;outline:none;cursor:pointer
+}
+.admin-select:focus{border-color:var(--blue)}
+
+/* 경쟁사 관리 테이블 */
+.comp-table{border:1px solid var(--gray-200);border-radius:8px;overflow:hidden}
+.comp-table-row{
+  display:grid;grid-template-columns:1fr auto;
+  align-items:center;padding:10px 12px;border-bottom:1px solid var(--gray-100);gap:8px
+}
+.comp-table-row:last-child{border-bottom:none}
+.comp-table-row:hover{background:var(--gray-50)}
+.comp-table-hd{background:var(--gray-50);font-size:9px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.06em}
+.comp-name-col{display:flex;align-items:center;gap:8px}
+.comp-color-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.comp-name-txt{font-size:11px;font-weight:500;color:var(--gray-800)}
+.comp-url-row{display:flex;gap:4px;margin-top:3px;flex-wrap:wrap}
+.comp-url-chip{font-size:8px;padding:1px 5px;border-radius:3px;font-family:monospace}
+.comp-url-chip.on{background:var(--blue-l);color:var(--blue)}
+.comp-url-chip.off{background:var(--gray-100);color:var(--gray-400);text-decoration:line-through}
+.comp-actions{display:flex;align-items:center;gap:6px;flex-shrink:0}
+.comp-toggle{
+  width:32px;height:18px;background:var(--gray-200);border-radius:9px;
+  position:relative;cursor:pointer;transition:background .2s;flex-shrink:0
+}
+.comp-toggle.on{background:var(--blue)}
+.comp-toggle::after{
+  content:'';position:absolute;top:2px;left:2px;
+  width:14px;height:14px;background:white;border-radius:50%;
+  transition:left .2s;box-shadow:0 1px 3px rgba(0,0,0,.2)
+}
+.comp-toggle.on::after{left:16px}
+.comp-del-btn{font-size:12px;color:var(--gray-300);cursor:pointer;padding:3px;transition:color .15s}
+.comp-del-btn:hover{color:var(--red)}
+.comp-add-btn{
+  width:100%;margin-top:8px;padding:8px;border-radius:7px;
+  border:1px dashed var(--gray-200);background:transparent;
+  font-size:11px;color:var(--gray-400);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s
+}
+.comp-add-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-l)}
+
+/* 플랫폼 체크박스 그리드 */
+.plat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:7px}
+.plat-opt{
+  display:flex;align-items:center;gap:8px;padding:9px 11px;
+  border:1px solid var(--gray-200);border-radius:7px;cursor:pointer;transition:all .15s
+}
+.plat-opt:hover{border-color:var(--blue-m)}
+.plat-opt.checked{border-color:var(--blue);background:var(--blue-l)}
+.plat-cb{
+  width:14px;height:14px;border:1.5px solid var(--gray-200);
+  border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center
+}
+.plat-opt.checked .plat-cb{background:var(--blue);border-color:var(--blue)}
+.plat-cb i{font-size:9px;color:white;display:none}
+.plat-opt.checked .plat-cb i{display:block}
+.plat-info{flex:1}
+.plat-lbl{font-size:11px;font-weight:500;color:var(--gray-700)}
+.plat-sub{font-size:8px;color:var(--gray-400);font-family:monospace}
+.plat-badge-real{font-size:7px;background:var(--green-l);color:var(--green);padding:1px 4px;border-radius:3px;font-weight:600}
+.plat-badge-sim{font-size:7px;background:#FFF7ED;color:#C2410C;padding:1px 4px;border-radius:3px;font-weight:600}
+
+/* 리포트 히스토리 */
+.hist-empty{text-align:center;padding:28px;color:var(--gray-400)}
+.hist-empty i{font-size:26px;display:block;margin-bottom:6px;color:var(--gray-200)}
+.hist-empty p{font-size:10px;line-height:1.6}
+.hist-item{
+  border:1px solid var(--gray-200);border-radius:8px;
+  padding:12px;margin-bottom:8px;cursor:pointer;transition:all .2s
+}
+.hist-item:hover{border-color:var(--blue-m);box-shadow:0 2px 8px rgba(27,111,217,.08)}
+.hist-item-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.hist-date{font-size:11px;font-weight:600;color:var(--gray-800)}
+.hist-time{font-size:9px;color:var(--gray-400);font-family:monospace}
+.hist-comp{font-size:10px;color:var(--gray-500);margin-bottom:6px}
+.hist-kpi-row{display:flex;gap:8px}
+.hist-kpi{font-size:9px;background:var(--blue-l);color:var(--blue);padding:2px 7px;border-radius:4px;font-weight:600}
+.hist-actions{display:flex;gap:6px;margin-top:8px;padding-top:8px;border-top:1px solid var(--gray-100)}
+.hist-view-btn{flex:1;padding:5px;border-radius:6px;background:var(--blue);border:none;color:white;font-size:9px;font-weight:600;cursor:pointer}
+.hist-view-btn:hover{background:var(--blue-d)}
+.hist-del-btn{padding:5px 10px;border-radius:6px;background:var(--gray-50);border:1px solid var(--gray-200);color:var(--gray-400);font-size:9px;cursor:pointer}
+.hist-del-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-l)}
+.hist-count{font-size:9px;color:var(--gray-400);margin-bottom:10px;font-family:monospace}
+
+/* 경쟁사 URL 편집 패널 */
+.comp-expand-btn{font-size:12px;color:var(--gray-300);cursor:pointer;padding:3px 4px;border-radius:4px;transition:all .15s;line-height:1}
+.comp-expand-btn:hover{color:var(--blue);background:var(--blue-l)}
+.comp-detail{max-height:0;overflow:hidden;transition:max-height .35s ease;background:var(--gray-50);border-bottom:1px solid var(--gray-100)}
+.comp-detail.open{max-height:320px}
+.comp-detail-inner{padding:12px 14px}
+.comp-detail-title{font-size:9px;font-weight:600;color:var(--gray-400);text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:5px}
+.comp-url-field{margin-bottom:8px}
+.comp-url-label{font-size:9px;font-weight:500;color:var(--gray-500);margin-bottom:3px;display:flex;align-items:center;gap:4px}
+.comp-url-input{width:100%;border:1px solid var(--gray-200);border-radius:6px;padding:7px 10px;font-size:10px;color:var(--gray-700);background:white;outline:none;font-family:monospace;transition:border-color .15s}
+.comp-url-input:focus{border-color:var(--blue)}
+.comp-url-input::placeholder{color:var(--gray-300);font-size:9px}
+.comp-url-save{width:100%;margin-top:6px;padding:7px;border-radius:6px;background:var(--blue);border:none;color:white;font-size:10px;font-weight:600;cursor:pointer;transition:background .15s}
+.comp-url-save:hover{background:var(--blue-d)}
+
+/* Admin 푸터 — 전체 적용 버튼 */
+.admin-footer{padding:12px 20px;border-top:2px solid var(--blue-l);background:var(--blue-l);flex-shrink:0}
+.admin-apply-btn{
+  width:100%;padding:11px;border-radius:8px;
+  background:var(--blue);border:none;color:white;
+  font-size:12px;font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:7px;transition:all .2s
+}
+.admin-apply-btn:hover{background:var(--blue-d);transform:translateY(-1px)}
+.admin-apply-btn i{font-size:13px}
+
+/* SB Canva 이미지 폴백 */
+.sb-img-fallback{
+  width:100%;height:100%;
+  background:linear-gradient(135deg,var(--navy) 0%,#1E3A8A 60%,#1D4ED8 100%);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:12px;position:relative;overflow:hidden
+}
+.sb-img-fallback::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(circle at 70% 30%,rgba(96,165,250,.15) 0%,transparent 60%);
+  pointer-events:none
+}
+.sif-badge{font-size:8px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.14em;margin-bottom:6px;font-family:monospace}
+.sif-title{font-size:11px;font-weight:600;color:white;text-align:center;line-height:1.4;position:relative}
+.sif-sub{font-size:9px;color:rgba(255,255,255,.4);margin-top:4px;text-align:center;position:relative}
+
+/* 테스트 발송 버튼 */
+.test-send-btn{
+  width:100%;margin-top:6px;padding:8px;border-radius:7px;
+  border:1px solid var(--blue-m);background:var(--blue-l);
+  font-size:10px;color:var(--blue);font-weight:600;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;gap:5px;transition:all .15s
+}
+.test-send-btn:hover{background:var(--blue);color:white}
+
+/* 저장 완료 토스트 */
+.toast{
+  position:fixed;bottom:20px;right:20px;z-index:1000;
+  background:var(--navy);color:white;padding:10px 16px;border-radius:8px;
+  font-size:11px;font-weight:500;display:flex;align-items:center;gap:7px;
+  box-shadow:var(--shadow-lg);opacity:0;transform:translateY(8px);
+  transition:all .25s;pointer-events:none
+}
+.toast.show{opacity:1;transform:translateY(0)}
+
+/* ── 어드민 비밀번호 모달 ── */
+.pw-ov{
+  display:none;position:fixed;inset:0;
+  background:rgba(10,15,40,.7);z-index:1000;
+  align-items:center;justify-content:center;backdrop-filter:blur(2px)
+}
+.pw-ov.on{display:flex}
+.pw-modal{
+  background:white;border-radius:14px;width:300px;
+  box-shadow:var(--shadow-lg);overflow:hidden
+}
+.pw-modal-hd{
+  background:var(--navy);padding:20px 22px 18px;text-align:center
+}
+.pw-modal-ic{
+  width:42px;height:42px;background:rgba(255,255,255,.1);
+  border-radius:11px;display:flex;align-items:center;justify-content:center;
+  margin:0 auto 10px;font-size:19px;color:white
+}
+.pw-modal-title{font-size:13px;font-weight:600;color:white;margin-bottom:3px}
+.pw-modal-sub{font-size:10px;color:rgba(255,255,255,.45)}
+.pw-modal-body{padding:20px 22px 22px}
+.pw-input-wrap{position:relative;margin-bottom:8px}
+.pw-input{
+  width:100%;border:1.5px solid var(--gray-200);border-radius:8px;
+  padding:11px 40px 11px 14px;font-size:18px;letter-spacing:.4em;
+  color:var(--gray-800);outline:none;font-family:monospace;
+  transition:border-color .15s;text-align:center
+}
+.pw-input:focus{border-color:var(--blue)}
+.pw-input.error{border-color:var(--red);animation:shake .3s ease}
+.pw-eye{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  font-size:15px;color:var(--gray-300);cursor:pointer
+}
+.pw-eye:hover{color:var(--gray-500)}
+.pw-error{
+  font-size:10px;color:var(--red);text-align:center;
+  height:16px;font-weight:500;margin-bottom:8px;opacity:0;transition:opacity .2s
+}
+.pw-error.show{opacity:1}
+.pw-submit{
+  width:100%;padding:11px;border-radius:8px;
+  background:var(--blue);border:none;color:white;
+  font-size:12px;font-weight:600;cursor:pointer;transition:all .2s
+}
+.pw-submit:hover{background:var(--blue-d)}
+.pw-cancel{
+  width:100%;padding:7px;border-radius:8px;background:transparent;
+  border:none;color:var(--gray-400);font-size:11px;cursor:pointer;
+  margin-top:5px;transition:color .15s
+}
+.pw-cancel:hover{color:var(--gray-600)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+</style>
+
+<!-- ══════════ APP SHELL ══════════ -->
+<div class="app">
+  <!-- 진행 바 -->
+  <div id="prog-bar"></div>
+
+  <!-- Canva 모달 -->
+  <div class="cv-ov" id="cvOv" onclick="if(event.target===this)closeCvModal()">
+    <div class="cv-modal" onclick="event.stopPropagation()">
+      <div class="cv-modal-hd">
+        <div class="cv-modal-hd-l">
+          <div class="cv-modal-ic"><i class="ti ti-wand" aria-hidden="true"></i></div>
+          <div>
+            <div class="cv-modal-title" id="cvModalTitle">SB → Canva 만들기</div>
+            <div class="cv-modal-sub" id="cvModalSub">플랫폼별 템플릿 선택 후 브리프 복사</div>
+          </div>
+        </div>
+        <span class="cv-modal-close" onclick="closeCvModal()"><i class="ti ti-x" aria-hidden="true"></i></span>
+      </div>
+      <div class="cv-modal-body">
+        <div class="cv-sec-label">① 플랫폼별 Canva 템플릿 선택</div>
+        <div class="cv-tmpl-grid" id="cvTmplGrid"></div>
+        <div class="cv-sec-label">② SB 브리프 복사 → Canva 텍스트 박스에 붙여넣기</div>
+        <div class="cv-brief-box">
+          <pre class="cv-brief-txt" id="cvBriefTxt"></pre>
+          <button class="cv-copy-btn" id="cvCopyBtn" onclick="copyBrief()">
+            <i class="ti ti-copy" style="font-size:10px" aria-hidden="true"></i>
+            <span id="cvCopyTxt">복사</span>
+          </button>
+        </div>
+      </div>
+      <div class="cv-modal-ft"><button class="btn-close" onclick="closeCvModal()">닫기</button></div>
+    </div>
+  </div>
+
+  <!-- ── 탑바 ── -->
+  <div class="topbar">
+    <a class="logo" href="#">
+      <div class="logo-mark"><i class="ti ti-chart-radar" aria-hidden="true"></i></div>
+      <div>
+        <div class="logo-text">CreativeOps</div>
+        <div class="logo-sub">Intelligence</div>
+      </div>
+    </a>
+    <div class="topbar-divider"></div>
+    <div class="analysis-chips" id="analysisChips"></div>
+    <div class="topbar-divider"></div>
+    <div class="topbar-right">
+      <button class="run-btn" id="runBtn" onclick="startFlow()">
+        <i class="ti ti-player-play" style="font-size:12px" aria-hidden="true"></i>
+        분석 실행
+      </button>
+      <button class="admin-btn" title="관리자 설정" onclick="openAdmin()">
+        <i class="ti ti-settings-2" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- 비밀번호 모달 -->
+  <div class="pw-ov" id="pwOv">
+    <div class="pw-modal">
+      <div class="pw-modal-hd">
+        <div class="pw-modal-ic"><i class="ti ti-lock" aria-hidden="true"></i></div>
+        <div class="pw-modal-title">관리자 인증</div>
+        <div class="pw-modal-sub">Admin 접근 비밀번호를 입력해주세요</div>
+      </div>
+      <div class="pw-modal-body">
+        <div class="pw-input-wrap">
+          <input class="pw-input" type="password" id="pwInput" maxlength="20"
+            placeholder="••••"
+            onkeydown="if(event.key==='Enter')checkPw()"
+            oninput="document.getElementById('pwInput').classList.remove('error');document.getElementById('pwError').classList.remove('show')">
+          <span class="pw-eye" id="pwEye" onclick="togglePwEye()"><i class="ti ti-eye" aria-hidden="true"></i></span>
+        </div>
+        <div class="pw-error" id="pwError">비밀번호가 올바르지 않습니다</div>
+        <button class="pw-submit" onclick="checkPw()">확인</button>
+        <button class="pw-cancel" onclick="closePwModal()">취소</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 어드민 백드롭 + 슬라이드 패널 -->
+  <div class="admin-backdrop" id="adminBackdrop" onclick="closeAdmin()"></div>
+  <div class="admin-panel" id="adminPanel">
+    <!-- 헤더 -->
+    <div class="admin-hd">
+      <div class="admin-hd-l">
+        <div class="admin-hd-ic"><i class="ti ti-settings-2" aria-hidden="true"></i></div>
+        <div>
+          <div class="admin-hd-title">관리자 설정</div>
+          <div class="admin-hd-sub">CreativeOps Admin</div>
+        </div>
+      </div>
+      <div class="admin-close" onclick="closeAdmin()"><i class="ti ti-x" aria-hidden="true"></i></div>
+    </div>
+
+    <!-- 탭 바 -->
+    <div class="admin-tabs">
+      <div class="admin-tab active" data-tab="api" onclick="switchAdminTab('api')">
+        <i class="ti ti-key" aria-hidden="true"></i>API 키
+      </div>
+      <div class="admin-tab" data-tab="comp" onclick="switchAdminTab('comp')">
+        <i class="ti ti-building-store" aria-hidden="true"></i>경쟁사
+      </div>
+      <div class="admin-tab" data-tab="collect" onclick="switchAdminTab('collect')">
+        <i class="ti ti-clock" aria-hidden="true"></i>수집 설정
+      </div>
+      <div class="admin-tab" data-tab="notify" onclick="switchAdminTab('notify')">
+        <i class="ti ti-bell" aria-hidden="true"></i>알림
+      </div>
+      <div class="admin-tab" data-tab="history" onclick="switchAdminTab('history')">
+        <i class="ti ti-history" aria-hidden="true"></i>히스토리
+      </div>
+    </div>
+
+    <!-- 탭 콘텐츠 -->
+    <div class="admin-body">
+
+      <!-- ① API 키 관리 -->
+      <div id="tab-api">
+        <div class="admin-section">
+          <div class="admin-section-title"><i class="ti ti-brand-apify" aria-hidden="true"></i>Apify API Token</div>
+          <div class="admin-field">
+            <div class="admin-label">Token <span class="admin-label-badge" id="apify-status">미설정</span></div>
+            <div class="admin-input-row">
+              <input class="admin-input" type="password" id="apifyToken" placeholder="apify_api_xxxxxxxxxxxx" oninput="updateApiStatus()">
+              <button class="admin-save-btn" onclick="saveApiKey('apify')">저장</button>
+            </div>
+            <div class="admin-notice">발급: apify.com → Settings → API &amp; Integrations → Personal API tokens</div>
+          </div>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section-title"><i class="ti ti-brain" aria-hidden="true"></i>Claude API Key</div>
+          <div class="admin-field">
+            <div class="admin-label">API Key <span class="admin-label-badge" id="claude-status">미설정</span></div>
+            <div class="admin-input-row">
+              <input class="admin-input" type="password" id="claudeKey" placeholder="sk-ant-api03-xxxx" oninput="updateApiStatus()">
+              <button class="admin-save-btn" onclick="saveApiKey('claude')">저장</button>
+            </div>
+            <div class="admin-notice">발급: console.anthropic.com → API Keys</div>
+          </div>
+        </div>
+        <div class="admin-notice" style="background:#FEF9EC;border-left-color:#F59E0B;margin-top:4px">
+          <i class="ti ti-lock" style="margin-right:4px" aria-hidden="true"></i>
+          API 키는 브라우저 localStorage에 저장됩니다. 공용 PC에서는 사용 후 반드시 초기화해주세요.
+          <br><button onclick="clearAllKeys()" style="margin-top:6px;font-size:9px;color:#C2410C;background:none;border:none;cursor:pointer;padding:0;text-decoration:underline">모든 키 초기화</button>
+        </div>
+      </div>
+
+      <!-- ② 경쟁사 관리 -->
+      <div id="tab-comp" style="display:none">
+        <div class="admin-section">
+          <div class="admin-section-title"><i class="ti ti-list" aria-hidden="true"></i>경쟁사 목록 관리</div>
+          <div class="comp-table" id="adminCompTable"></div>
+          <button class="comp-add-btn" onclick="openAddComp()">
+            <i class="ti ti-plus" style="font-size:12px" aria-hidden="true"></i>경쟁사 추가
+          </button>
+        </div>
+        <!-- 추가 폼 (접힌 상태) -->
+        <div id="addCompForm" style="display:none">
+          <div class="admin-section" style="background:var(--blue-l);border:1px solid var(--blue-m);border-radius:8px;padding:12px;margin-top:8px">
+            <div class="admin-section-title" style="color:var(--blue)"><i class="ti ti-plus" aria-hidden="true"></i>새 경쟁사 추가</div>
+            <div class="admin-field"><div class="admin-label">게임명 *</div><input class="admin-input" id="newCompName" placeholder="예: 젠레스 존 제로"></div>
+            <div class="admin-field"><div class="admin-label">Meta Ads Library URL</div><input class="admin-input" id="newCompMeta" placeholder="https://www.facebook.com/ads/library/?..."></div>
+            <div class="admin-field"><div class="admin-label">Google 도메인 또는 광고주명</div><input class="admin-input" id="newCompGoogle" placeholder="예: perfectworld.com"></div>
+            <div class="admin-field"><div class="admin-label">X 계정 URL</div><input class="admin-input" id="newCompX" placeholder="https://x.com/@계정명"></div>
+            <div style="display:flex;gap:6px;margin-top:4px">
+              <button class="admin-save-btn" onclick="confirmAddComp()" style="flex:1">추가 완료</button>
+              <button onclick="cancelAddComp()" style="flex:1;padding:7px;border-radius:7px;border:1px solid var(--gray-200);background:white;font-size:10px;cursor:pointer;color:var(--gray-500)">취소</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ③ 수집 설정 -->
+      <div id="tab-collect" style="display:none">
+        <div class="admin-section">
+          <div class="admin-section-title"><i class="ti ti-clock-play" aria-hidden="true"></i>수집 주기</div>
+          <div class="admin-field">
+            <div class="admin-label">자동 수집 스케줄</div>
+            <select class="admin-select" id="scheduleSelect">
+              <option value="manual">수동 실행만</option>
+              <option value="weekly_mon">매주 월요일 오전 9시</option>
+              <option value="biweekly">격주 월요일 오전 9시</option>
+              <option value="monthly">매월 1일 오전 9시</option>
+            </select>
+            <div class="admin-notice">현재 프로토타입에서는 수동 실행만 지원됩니다. 자동화는 GitHub Actions 연동 시 활성화됩니다.</div>
+          </div>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section-title"><i class="ti ti-device-desktop" aria-hidden="true"></i>수집 매체 설정</div>
+          <div class="plat-grid" id="adminPlatGrid">
+            <div class="plat-opt checked" data-plat="meta" onclick="toggleAdminPlat(this)">
+              <div class="plat-cb"><i class="ti ti-check" aria-hidden="true"></i></div>
+              <div class="plat-info"><div class="plat-lbl"><i class="ti ti-brand-meta" aria-hidden="true"></i> Meta</div><div class="plat-sub">facebook-ads-library-scraper</div></div>
+              <span class="plat-badge-real">실제API</span>
+            </div>
+            <div class="plat-opt checked" data-plat="google" onclick="toggleAdminPlat(this)">
+              <div class="plat-cb"><i class="ti ti-check" aria-hidden="true"></i></div>
+              <div class="plat-info"><div class="plat-lbl"><i class="ti ti-brand-google" aria-hidden="true"></i> Google</div><div class="plat-sub">google-ads-scraper</div></div>
+              <span class="plat-badge-real">실제API</span>
+            </div>
+            <div class="plat-opt checked" data-plat="x" onclick="toggleAdminPlat(this)">
+              <div class="plat-cb"><i class="ti ti-check" aria-hidden="true"></i></div>
+              <div class="plat-info"><div class="plat-lbl"><i class="ti ti-brand-x" aria-hidden="true"></i> X (Twitter)</div><div class="plat-sub">tweet-scraper</div></div>
+              <span class="plat-badge-real">실제API</span>
+            </div>
+            <div class="admin-notice" style="grid-column:1/-1;margin-top:2px">
+              <i class="ti ti-info-circle" style="margin-right:4px" aria-hidden="true"></i>
+              TikTok은 한국 광고 애셋 라이브러리가 미존재하여 제외되었습니다.
+            </div>
+          </div>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section-title"><i class="ti ti-adjustments" aria-hidden="true"></i>수집 범위</div>
+          <div class="admin-field">
+            <div class="admin-label">매체당 최대 수집 건수</div>
+            <input class="admin-input" type="number" id="maxItems" value="30" min="10" max="100">
+          </div>
+          <button class="admin-save-btn" onclick="saveCollectSettings()" style="width:100%;padding:9px">수집 설정 저장</button>
+        </div>
+      </div>
+
+      <!-- ④ 알림 설정 -->
+      <div id="tab-notify" style="display:none">
+        <div class="admin-section">
+          <div class="admin-section-title"><i class="ti ti-brand-discord" aria-hidden="true"></i>Discord 알림</div>
+          <div class="admin-field">
+            <div class="admin-label">Webhook URL</div>
+            <input class="admin-input" type="url" id="discordWebhook" placeholder="https://discord.com/api/webhooks/...">
+          </div>
+          <button class="test-send-btn" onclick="testNotify('discord')">
+            <i class="ti ti-send" style="font-size:11px" aria-hidden="true"></i>Discord 테스트 발송
+          </button>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section-title"><i class="ti ti-mail" aria-hidden="true"></i>이메일 알림</div>
+          <div class="admin-field">
+            <div class="admin-label">수신 이메일</div>
+            <input class="admin-input" type="email" id="notifyEmail" placeholder="team@company.com">
+          </div>
+          <button class="test-send-btn" onclick="testNotify('email')">
+            <i class="ti ti-send" style="font-size:11px" aria-hidden="true"></i>이메일 테스트 발송
+          </button>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section-title"><i class="ti ti-clock" aria-hidden="true"></i>자동 발송 시간</div>
+          <div class="admin-field">
+            <div class="admin-label">분석 완료 후 발송 시간</div>
+            <select class="admin-select" id="notifyTime">
+              <option value="immediate">분석 완료 즉시</option>
+              <option value="0900">매일 오전 9:00</option>
+              <option value="1000">매일 오전 10:00</option>
+              <option value="1800">매일 오후 6:00</option>
+            </select>
+          </div>
+          <button class="admin-save-btn" onclick="saveNotifySettings()" style="width:100%;padding:9px">알림 설정 저장</button>
+        </div>
+      </div>
+
+      <!-- ⑤ 리포트 히스토리 -->
+      <div id="tab-history" style="display:none">
+        <div class="admin-section">
+          <div class="admin-section-title"><i class="ti ti-history" aria-hidden="true"></i>저장된 분석 리포트</div>
+          <div class="hist-count" id="histCount">로딩 중...</div>
+          <div id="histList"></div>
+        </div>
+      </div>
+
+    </div><!-- /admin-body -->
+
+    <!-- Admin 푸터 — 전체 적용 -->
+    <div class="admin-footer">
+      <button class="admin-apply-btn" onclick="applyAllSettings()">
+        <i class="ti ti-check" aria-hidden="true"></i>
+        변경사항 전체 적용
+      </button>
+    </div>
+  </div><!-- /admin-panel -->
+
+  <!-- 토스트 -->
+  <div class="toast" id="toast">
+    <i class="ti ti-check" aria-hidden="true"></i>
+    <span id="toastMsg">저장되었습니다</span>
+  </div>
+
+  <!-- ── 바디 ── -->
+  <div class="body">
+    <!-- ── 사이드바 ── -->
+    <div class="sidebar">
+      <div class="sb-section">
+        <div class="sb-section-lbl">경쟁작 선택</div>
+        <div class="comp-list" id="compList"></div>
+      </div>
+      <div class="sb-section">
+        <div class="sb-section-lbl">분석 기간</div>
+        <div class="date-row">
+          <input class="date-inp" type="date" id="sdInp" value="2026-04-22">
+          <span class="date-sep">~</span>
+          <input class="date-inp" type="date" id="edInp" value="2026-05-22">
+        </div>
+      </div>
+      <div class="status-area">
+        <div class="status-dot-row">
+          <div class="status-dot" id="sdot"></div>
+          <span class="status-txt" id="stxt">대기 중</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── 메인 ── -->
+    <div class="main" id="mainContent">
+
+      <!-- 수집 현황 KPI -->
+      <div>
+        <div class="sec-hd">
+          <div class="sec-hd-title"><i class="ti ti-database" style="margin-right:4px" aria-hidden="true"></i>수집 현황</div>
+          <div class="sec-divider"></div>
+        </div>
+        <div class="kpi-banner" id="kpiBanner">
+          <div class="kpi-item">
+            <div class="kpi-icon"><i class="ti ti-brand-meta" aria-hidden="true"></i> Meta</div>
+            <div class="kpi-num blue" id="kpi-meta">—</div>
+            <div class="kpi-label">광고 수집</div>
+            <div><span class="kpi-badge real" id="kpi-meta-badge">실제</span></div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-icon"><i class="ti ti-brand-google" aria-hidden="true"></i> Google</div>
+            <div class="kpi-num blue" id="kpi-google">—</div>
+            <div class="kpi-label">크리에이티브</div>
+            <div><span class="kpi-badge real" id="kpi-google-badge">실제</span></div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-icon"><i class="ti ti-brand-x" aria-hidden="true"></i> X</div>
+            <div class="kpi-num blue" id="kpi-x">—</div>
+            <div class="kpi-label">트윗</div>
+            <div><span class="kpi-badge real" id="kpi-x-badge">실제</span></div>
+          </div>
+          <div class="kpi-item">
+            <div class="kpi-icon"><i class="ti ti-clock" aria-hidden="true"></i> 분석 기간</div>
+            <div class="kpi-num" style="font-size:13px;margin-top:4px" id="kpi-date">—</div>
+            <div class="kpi-label" id="kpi-comp">—</div>
+          </div>
+        </div>
+        <div class="empty-placeholder" id="kpiEmpty">
+          <i class="ti ti-database" aria-hidden="true"></i>
+          <p>좌측에서 경쟁작을 선택하고<br>분석 실행을 눌러주세요</p>
+        </div>
+      </div>
+
+      <!-- AI 분석 -->
+      <div>
+        <div class="sec-hd">
+          <div class="sec-hd-title"><i class="ti ti-sparkles" style="margin-right:4px" aria-hidden="true"></i>AI 분석 리포트</div>
+          <div class="sec-divider"></div>
+        </div>
+        <div class="insight-grid" id="insightGrid">
+          <div class="insight-card">
+            <div class="insight-card-hd">
+              <div class="insight-icon strategy"><i class="ti ti-chess" aria-hidden="true"></i></div>
+              <div class="insight-card-title">크리에이티브 전략</div>
+            </div>
+            <div class="insight-card-body placeholder">분석 실행 후 자동 생성됩니다</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-card-hd">
+              <div class="insight-icon perf"><i class="ti ti-chart-bar" aria-hidden="true"></i></div>
+              <div class="insight-card-title">채널 성과 인사이트</div>
+            </div>
+            <div class="insight-card-body placeholder">분석 실행 후 자동 생성됩니다</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-card-hd">
+              <div class="insight-icon action"><i class="ti ti-target" aria-hidden="true"></i></div>
+              <div class="insight-card-title">즉시 적용 인사이트</div>
+            </div>
+            <div class="insight-card-body placeholder">분석 실행 후 자동 생성됩니다</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SB 초안 -->
+      <div id="sbSection" style="display:none">
+        <div class="sb-header">
+          <div class="sb-header-l">
+            <div class="sb-header-title"><i class="ti ti-photo" style="margin-right:4px" aria-hidden="true"></i>Canva 가로형 광고 초안</div>
+            <span class="cv-badge">3종 자동 생성</span>
+          </div>
+          <button class="cv-export-btn" onclick="exportAllCanva()">
+            <div class="cv-export-ic">C</div>
+            전체 내보내기
+          </button>
+        </div>
+        <div class="sb-grid" id="sbGrid"></div>
+      </div>
+
+    </div><!-- /main -->
+  </div><!-- /body -->
+</div><!-- /app -->
+
+<script>
+// ══════════════════════════════════════
+//  CreativeOps Intelligence v1.0
+//  Executive Dashboard
+// ══════════════════════════════════════
+
+// ══════════════════════════════════════
+//  ADMIN PANEL
+// ══════════════════════════════════════
+const COMP_COLORS=['#3B82F6','#10B981','#8B5CF6','#F59E0B','#EF4444'];
+
+const ADMIN_PW = '1234';
+
+function openAdmin(){
+  // 비밀번호 모달 먼저
+  document.getElementById('pwInput').value='';
+  document.getElementById('pwInput').classList.remove('error');
+  document.getElementById('pwError').classList.remove('show');
+  document.getElementById('pwOv').classList.add('on');
+  setTimeout(()=>document.getElementById('pwInput').focus(), 100);
+}
+function closePwModal(){
+  document.getElementById('pwOv').classList.remove('on');
+}
+function checkPw(){
+  const val = document.getElementById('pwInput').value;
+  if(val === ADMIN_PW){
+    closePwModal();
+    // 인증 성공 → Admin 패널 열기
+    document.getElementById('adminPanel').classList.add('open');
+    document.getElementById('adminBackdrop').classList.add('open');
+    loadAdminData();
+  } else {
+    document.getElementById('pwInput').classList.add('error');
+    document.getElementById('pwError').classList.add('show');
+    document.getElementById('pwInput').value='';
+    setTimeout(()=>document.getElementById('pwInput').focus(), 50);
+  }
+}
+function togglePwEye(){
+  const inp = document.getElementById('pwInput');
+  const ico = document.getElementById('pwEye').querySelector('i');
+  if(inp.type==='password'){
+    inp.type='text';
+    ico.className='ti ti-eye-off';
+  } else {
+    inp.type='password';
+    ico.className='ti ti-eye';
+  }
+}
+function closeAdmin(){
+  document.getElementById('adminPanel').classList.remove('open');
+  document.getElementById('adminBackdrop').classList.remove('open');
+}
+
+// ── 탭 전환 ──
+function switchAdminTab(tab){
+  document.querySelectorAll('.admin-tab').forEach(el=>el.classList.toggle('active',el.dataset.tab===tab));
+  ['api','comp','collect','notify','history'].forEach(t=>{
+    document.getElementById('tab-'+t).style.display=t===tab?'block':'none';
+  });
+  if(tab==='history')loadHistory();
+  if(tab==='comp')renderAdminComps();
+}
+
+// ── 전체 데이터 로드 ──
+function loadAdminData(){
+  // API 키
+  const apifyToken=localStorage.getItem('co_apify_token')||'';
+  const claudeKey=localStorage.getItem('co_claude_key')||'';
+  if(apifyToken){document.getElementById('apifyToken').value=apifyToken;}
+  if(claudeKey){document.getElementById('claudeKey').value=claudeKey;}
+  updateApiStatus();
+  // 알림 설정
+  const discordWh=localStorage.getItem('co_discord_webhook')||'';
+  const notifyEmail=localStorage.getItem('co_notify_email')||'';
+  if(discordWh)document.getElementById('discordWebhook').value=discordWh;
+  if(notifyEmail)document.getElementById('notifyEmail').value=notifyEmail;
+  // 수집 설정
+  const maxItems=localStorage.getItem('co_max_items')||'30';
+  document.getElementById('maxItems').value=maxItems;
+}
+
+// ── API 키 상태 표시 ──
+function updateApiStatus(){
+  const apify=document.getElementById('apifyToken').value.trim();
+  const claude=document.getElementById('claudeKey').value.trim();
+  const as=document.getElementById('apify-status');
+  const cs=document.getElementById('claude-status');
+  as.textContent=apify?'설정됨':'미설정';
+  as.className='admin-label-badge'+(apify?' real':'');
+  as.style.background=apify?'var(--green-l)':'var(--gray-100)';
+  as.style.color=apify?'var(--green)':'var(--gray-400)';
+  cs.textContent=claude?'설정됨':'미설정';
+  cs.style.background=claude?'var(--green-l)':'var(--gray-100)';
+  cs.style.color=claude?'var(--green)':'var(--gray-400)';
+}
+function saveApiKey(type){
+  if(type==='apify'){
+    const v=document.getElementById('apifyToken').value.trim();
+    localStorage.setItem('co_apify_token',v);
+    savedToken=v; // 메인 플로우에 반영
+  }else{
+    const v=document.getElementById('claudeKey').value.trim();
+    localStorage.setItem('co_claude_key',v);
+  }
+  updateApiStatus();
+  showToast('API 키가 저장되었습니다');
+}
+function clearAllKeys(){
+  if(!confirm('저장된 모든 API 키를 삭제하시겠습니까?'))return;
+  ['co_apify_token','co_claude_key'].forEach(k=>localStorage.removeItem(k));
+  document.getElementById('apifyToken').value='';
+  document.getElementById('claudeKey').value='';
+  updateApiStatus();
+  showToast('API 키가 초기화되었습니다');
+}
+
+// ── 경쟁사 관리 ──
+function renderAdminComps(){
+  const table=document.getElementById('adminCompTable');
+  if(!COMPS.length){table.innerHTML='<div style="padding:16px;text-align:center;font-size:10px;color:var(--gray-400)">경쟁사를 추가해주세요</div>';return;}
+  table.innerHTML=COMPS.map((c,i)=>`
+    <div class="comp-table-row">
+      <div class="comp-name-col">
+        <div class="comp-color-dot" style="background:${COMP_COLORS[i%COMP_COLORS.length]}"></div>
+        <div>
+          <div class="comp-name-txt">${c.name}</div>
+          <div class="comp-url-row">
+            <span class="comp-url-chip ${c.plats.meta?.url?'on':'off'}">Meta</span>
+            <span class="comp-url-chip ${c.plats.google?.url?'on':'off'}">Google</span>
+            <span class="comp-url-chip ${c.plats.x?.url?'on':'off'}">X</span>
+          </div>
+        </div>
+      </div>
+      <div class="comp-actions">
+        <span class="comp-expand-btn" onclick="toggleCompDetail(${c.id})" title="URL 편집">
+          <i class="ti ti-pencil" aria-hidden="true"></i>
+        </span>
+        <div class="comp-toggle${c.sel?' on':''}" onclick="adminToggleComp(${c.id})" title="${c.sel?'분석 제외':'분석 포함'}"></div>
+        <span class="comp-del-btn" onclick="adminDeleteComp(${c.id})" title="삭제"><i class="ti ti-trash" aria-hidden="true"></i></span>
+      </div>
+    </div>
+    <div class="comp-detail" id="cd-${c.id}">
+      <div class="comp-detail-inner">
+        <div class="comp-detail-title"><i class="ti ti-link" aria-hidden="true"></i>광고 애셋 라이브러리 URL</div>
+        <div class="comp-url-field">
+          <div class="comp-url-label"><i class="ti ti-brand-meta" aria-hidden="true"></i> Meta Ads Library URL</div>
+          <input class="comp-url-input" id="curl-meta-${c.id}" value="${c.plats.meta?.url||''}" placeholder="https://www.facebook.com/ads/library/?view_all_page_id=...">
+        </div>
+        <div class="comp-url-field">
+          <div class="comp-url-label"><i class="ti ti-brand-google" aria-hidden="true"></i> Google 도메인 또는 광고주명</div>
+          <input class="comp-url-input" id="curl-google-${c.id}" value="${c.plats.google?.url||''}" placeholder="예: perfectworld.com">
+        </div>
+        <div class="comp-url-field">
+          <div class="comp-url-label"><i class="ti ti-brand-x" aria-hidden="true"></i> X 계정 URL</div>
+          <input class="comp-url-input" id="curl-x-${c.id}" value="${c.plats.x?.url||''}" placeholder="https://x.com/@계정명">
+        </div>
+        <button class="comp-url-save" onclick="saveCompUrls(${c.id})">URL 저장</button>
+      </div>
+    </div>`).join('');
+}
+function toggleCompDetail(id){
+  const el=document.getElementById('cd-'+id);
+  if(el) el.classList.toggle('open');
+}
+function saveCompUrls(id){
+  const c=COMPS.find(c=>c.id===id);if(!c)return;
+  c.plats.meta.url=document.getElementById('curl-meta-'+id).value.trim();
+  c.plats.google.url=document.getElementById('curl-google-'+id).value.trim();
+  c.plats.x.url=document.getElementById('curl-x-'+id).value.trim();
+  renderAdminComps();renderComps();
+  showToast(`${c.name} URL 저장됨`);
+}
+function adminToggleComp(id){
+  const c=COMPS.find(c=>c.id===id);if(!c)return;
+  c.sel=!c.sel;renderAdminComps();renderComps();
+}
+function adminDeleteComp(id){
+  const c=COMPS.find(c=>c.id===id);if(!c)return;
+  if(COMPS.length<=1){showToast('최소 1개 경쟁사가 필요합니다');return;}
+  if(!confirm(`"${c.name}"을 삭제하시겠습니까?`))return;
+  COMPS.splice(COMPS.findIndex(c=>c.id===id),1);
+  renderAdminComps();renderComps();showToast(`${c.name} 삭제됨`);
+}
+function openAddComp(){document.getElementById('addCompForm').style.display='block';}
+function cancelAddComp(){document.getElementById('addCompForm').style.display='none';}
+function confirmAddComp(){
+  const name=document.getElementById('newCompName').value.trim();
+  if(!name){document.getElementById('newCompName').style.borderColor='var(--red)';return;}
+  const newId=Math.max(...COMPS.map(c=>c.id))+1;
+  COMPS.push({
+    id:newId,name,sel:true,
+    plats:{
+      meta:{url:document.getElementById('newCompMeta').value.trim()},
+      google:{url:document.getElementById('newCompGoogle').value.trim(),advertiserId:''},
+      x:{url:document.getElementById('newCompX').value.trim()}
+    }
+  });
+  ['newCompName','newCompMeta','newCompGoogle','newCompX'].forEach(id=>{
+    document.getElementById(id).value='';
+    document.getElementById(id).style.borderColor='';
+  });
+  cancelAddComp();renderAdminComps();renderComps();
+  showToast(`${name} 추가됨`);
+}
+
+// ── 전체 적용 ──
+function applyAllSettings(){
+  const apify=document.getElementById('apifyToken').value.trim();
+  const claude=document.getElementById('claudeKey').value.trim();
+  if(apify){localStorage.setItem('co_apify_token',apify);savedToken=apify;}
+  if(claude)localStorage.setItem('co_claude_key',claude);
+  const discord=document.getElementById('discordWebhook').value.trim();
+  const email=document.getElementById('notifyEmail').value.trim();
+  if(discord)localStorage.setItem('co_discord_webhook',discord);
+  if(email)localStorage.setItem('co_notify_email',email);
+  localStorage.setItem('co_notify_time',document.getElementById('notifyTime').value);
+  localStorage.setItem('co_max_items',document.getElementById('maxItems').value);
+  localStorage.setItem('co_schedule',document.getElementById('scheduleSelect').value);
+  renderComps();
+  updateApiStatus();
+  showToast('모든 설정이 적용되었습니다 ✓');
+}
+
+// ── 탭 이름 더블클릭 수정 ──
+function startRenameSession(id,e){
+  e.stopPropagation();
+  const ss=sessions.find(s=>s.id===id);if(!ss)return;
+  const newName=prompt('탭 이름 변경:', ss.label);
+  if(newName&&newName.trim()){ss.label=newName.trim();renderSessionChips();}
+}
+
+// ── 기존 renderSessionChips에서 더블클릭 이벤트 추가 ──
+function toggleAdminPlat(el){
+  el.classList.toggle('checked');
+  const plat=el.dataset.plat;
+  PS[plat]=el.classList.contains('checked');
+}
+
+// ── 수집 설정 저장 ──
+function saveCollectSettings(){
+  localStorage.setItem('co_max_items',document.getElementById('maxItems').value);
+  localStorage.setItem('co_schedule',document.getElementById('scheduleSelect').value);
+  showToast('수집 설정이 저장되었습니다');
+}
+
+// ── 알림 설정 저장 ──
+function saveNotifySettings(){
+  localStorage.setItem('co_discord_webhook',document.getElementById('discordWebhook').value.trim());
+  localStorage.setItem('co_notify_email',document.getElementById('notifyEmail').value.trim());
+  localStorage.setItem('co_notify_time',document.getElementById('notifyTime').value);
+  showToast('알림 설정이 저장되었습니다');
+}
+function testNotify(type){
+  showToast(`${type==='discord'?'Discord':'이메일'} 테스트 발송 완료 (실제 연동 시 활성화)`);
+}
+
+// ══════════════════════════════════════
+//  리포트 히스토리 (localStorage)
+// ══════════════════════════════════════
+const HISTORY_KEY='co_reports';
+
+function saveToHistory(compNames,period,fbData,gData,xData,analysisData){
+  const report={
+    id:Date.now(),
+    date:new Date().toLocaleDateString('ko-KR',{year:'numeric',month:'2-digit',day:'2-digit'}),
+    time:new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'}),
+    competitors:compNames.join(', '),
+    period,
+    kpi:{meta:fbData?.count||0,google:gData?.count||0,x:xData?.count||0},
+    analysis:analysisData
+  };
+  const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
+  history.unshift(report);
+  if(history.length>30)history.pop();
+  localStorage.setItem(HISTORY_KEY,JSON.stringify(history));
+}
+
+function loadHistory(){
+  const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
+  const listEl=document.getElementById('histList');
+  const countEl=document.getElementById('histCount');
+  countEl.textContent=`총 ${history.length}개 저장됨 (최대 30개)`;
+  if(!history.length){
+    listEl.innerHTML=`<div class="hist-empty">
+      <i class="ti ti-history" aria-hidden="true"></i>
+      <p>아직 저장된 리포트가 없어요<br>분석 실행 시 자동으로 저장됩니다</p>
+    </div>`;
+    return;
+  }
+  listEl.innerHTML=history.map((r,i)=>`
+    <div class="hist-item">
+      <div class="hist-item-hd">
+        <div class="hist-date">${r.date}</div>
+        <div class="hist-time">${r.time}</div>
+      </div>
+      <div class="hist-comp">${r.competitors} · ${r.period}</div>
+      <div class="hist-kpi-row">
+        <span class="hist-kpi">Meta ${r.kpi.meta}개</span>
+        <span class="hist-kpi">Google ${r.kpi.google}개</span>
+        <span class="hist-kpi">X ${r.kpi.x}개</span>
+      </div>
+      <div class="hist-actions">
+        <button class="hist-view-btn" onclick="loadHistoryReport(${i})">결과 보기</button>
+        <button class="hist-del-btn" onclick="deleteHistoryReport(${i})">삭제</button>
+      </div>
+    </div>`).join('');
+}
+
+function loadHistoryReport(idx){
+  const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
+  const r=history[idx];if(!r)return;
+  // 분석 카드에 히스토리 결과 표시
+  renderInsightCards(JSON.stringify(r.analysis));
+  closeAdmin();
+  showToast(`${r.date} 리포트를 불러왔습니다`);
+}
+
+function deleteHistoryReport(idx){
+  const history=JSON.parse(localStorage.getItem(HISTORY_KEY)||'[]');
+  history.splice(idx,1);
+  localStorage.setItem(HISTORY_KEY,JSON.stringify(history));
+  loadHistory();
+  showToast('리포트가 삭제되었습니다');
+}
+
+// ── 토스트 ──
+let toastTimer=null;
+function showToast(msg){
+  clearTimeout(toastTimer);
+  document.getElementById('toastMsg').textContent=msg;
+  document.getElementById('toast').classList.add('show');
+  toastTimer=setTimeout(()=>document.getElementById('toast').classList.remove('show'),2400);
+}
+
+// ── 설정 ──
+const ACTORS={meta:'XtaWFhbtfxyzqrFmd',google:'0TXh2sQ2VQFw7cvBW',x:'61RPP7dywgiy0JPD0'};
+let savedToken=localStorage.getItem('co_apify_token')||'';
+
+
+const COMPS = [
+  {id:0, name:'이환 (NTE)', sel:true,
+   plats:{meta:{url:'https://www.facebook.com/ads/library/?active_status=all&ad_type=all&country=KR&view_all_page_id=326512703880283'},
+          google:{url:'perfectworld.com',advertiserId:'13839329554876858369'},
+          x:{url:'https://x.com/NTE_KO'}}},
+  {id:1, name:'나혼렙: 어라이즈', sel:false,
+   plats:{meta:{url:''},google:{url:'SoloLevelingArise'},x:{url:'https://x.com/SoloLevelingKR'}}},
+  {id:2, name:'원신', sel:false,
+   plats:{meta:{url:''},google:{url:'Genshin Impact'},x:{url:'https://x.com/GenshinImpact'}}},
+  {id:3, name:'명조: 워더링 웨이브', sel:false,
+   plats:{meta:{url:''},google:{url:'Wuthering Waves'},x:{url:'https://x.com/Wuthering_Waves'}}},
+  {id:4, name:'붕괴: 스타레일', sel:false,
+   plats:{meta:{url:''},google:{url:'Honkai Star Rail'},x:{url:'https://x.com/HonkaiStarRail'}}},
+];
+
+const CANVA_DESIGNS = [
+  {img:'https://design.canva.ai/BdkvUoxUTvaeMfQ', url:'https://www.canva.com/d/EqGCb9bgFIZlXnP',
+   templates:[{p:'Meta 광고 (16:9)',em:'📘',u:'https://www.canva.com/templates/?query=facebook+ad+video+game&type=t'},{p:'IG Reels (9:16)',em:'📱',u:'https://www.canva.com/templates/?query=instagram+reel+video+game&type=t'},{p:'Google 배너',em:'🔍',u:'https://www.canva.com/templates/?query=google+display+ad+game&type=t'},{p:'YouTube Shorts',em:'📺',u:'https://www.canva.com/templates/?query=youtube+shorts+game&type=t'}]},
+  {img:'https://design.canva.ai/96q92LD_1CRvaRX', url:'https://www.canva.com/d/LlRZ188innhT1KN',
+   templates:[{p:'X 카드 (16:9)',em:'✖️',u:'https://www.canva.com/templates/?query=twitter+video+game&type=t'},{p:'IG Story (9:16)',em:'📸',u:'https://www.canva.com/templates/?query=instagram+story+game+anime&type=t'},{p:'캐릭터 포스터',em:'🎨',u:'https://www.canva.com/templates/?query=game+character+poster&type=t'},{p:'Meta 캐러셀',em:'📘',u:'https://www.canva.com/templates/?query=facebook+carousel+game&type=t'}]},
+  {img:'https://design.canva.ai/EHmlM_NchhIHY89', url:'https://www.canva.com/d/CjYwlSBtSVPq8pC',
+   templates:[{p:'TikTok (9:16)',em:'🎵',u:'https://www.canva.com/templates/?query=tiktok+video+gaming+challenge&type=t'},{p:'IG Reels 도전형',em:'📱',u:'https://www.canva.com/templates/?query=instagram+reel+challenge+gaming&type=t'},{p:'UGC 스타일',em:'📹',u:'https://www.canva.com/templates/?query=ugc+style+video+game&type=t'},{p:'X 영상',em:'✖️',u:'https://www.canva.com/templates/?query=twitter+promoted+video+game&type=t'}]}
+];
+
+// ── 상태 ──
+let running = false;
+let sessions = [{id:0, label:'분석 1', sd:'2026-04-22', ed:'2026-05-22', active:true}];
+let sessionId = 1;
+
+// ── 초기화 ──
+renderComps();
+renderSessionChips();
+document.getElementById('sdInp').onchange = e => { getSession().sd=e.target.value; renderSessionChips(); };
+document.getElementById('edInp').onchange = e => { getSession().ed=e.target.value; renderSessionChips(); };
+
+function getSession(){ return sessions.find(s=>s.active)||sessions[0]; }
+
+function renderComps(){
+  document.getElementById('compList').innerHTML = COMPS.map(c=>`
+    <div class="comp-row${c.sel?' active':''}" onclick="toggleComp(${c.id})">
+      <div class="comp-cb"><i class="ti ti-check" aria-hidden="true"></i></div>
+      <span class="comp-name">${c.name}</span>
+    </div>`).join('');
+}
+function toggleComp(id){
+  const c=COMPS.find(c=>c.id===id);if(!c)return;
+  c.sel=!c.sel;renderComps();
+}
+
+function renderSessionChips(){
+  const bar = document.getElementById('analysisChips');
+  bar.innerHTML = sessions.map(ss=>`
+    <div class="analysis-chip${ss.active?' active':''}"
+      onclick="switchSession(${ss.id})"
+      ondblclick="startRenameSession(${ss.id},event)"
+      title="더블클릭하면 이름을 수정할 수 있어요">
+      <i class="ti ti-chart-bar" aria-hidden="true"></i>
+      ${ss.label}
+      <span style="font-size:9px;color:rgba(255,255,255,.45);margin-left:2px">${fmtD(ss.sd)}~${fmtD(ss.ed)}</span>
+      ${sessions.length>1?`<span class="chip-close" onclick="event.stopPropagation();removeSession(${ss.id})">×</span>`:''}
+    </div>`).join('')
+    + `<button class="chip-add" onclick="addSession()"><i class="ti ti-plus" style="font-size:10px" aria-hidden="true"></i>새 분석</button>`;
+}
+function fmtD(d){ if(!d)return ''; const p=d.split('-'); return p[1]+'/'+p[2]; }
+function addSession(){
+  const id=sessionId++;
+  sessions.forEach(s=>s.active=false);
+  sessions.push({id,label:`분석 ${id+1}`,sd:'2026-04-22',ed:'2026-05-22',active:true});
+  renderSessionChips();
+  resetUI();
+}
+function switchSession(id){
+  sessions.forEach(s=>s.active=s.id===id);
+  const s=getSession();
+  document.getElementById('sdInp').value=s.sd;
+  document.getElementById('edInp').value=s.ed;
+  renderSessionChips();
+  resetUI();
+}
+function removeSession(id){
+  if(sessions.length===1)return;
+  const idx=sessions.findIndex(s=>s.id===id);
+  sessions=sessions.filter(s=>s.id!==id);
+  if(!sessions.find(s=>s.active)){sessions[Math.max(0,idx-1)].active=true;}
+  renderSessionChips();resetUI();
+}
+
+function resetUI(){
+  document.getElementById('kpiBanner').classList.remove('show');
+  document.getElementById('kpiEmpty').style.display='block';
+  document.getElementById('sbSection').style.display='none';
+  resetInsightCards();
+  setSt('대기 중','');
+}
+function resetInsightCards(){
+  const ph='분석 실행 후 자동 생성됩니다';
+  [['strategy','크리에이티브 전략','chess'],['perf','채널 성과 인사이트','chart-bar'],['action','즉시 적용 인사이트','target']].forEach(([cls,ttl,ic])=>{
+    document.getElementById('insight-'+cls).innerHTML=`<div class="insight-card-body placeholder">${ph}</div>`;
+  });
+}
+
+// ── 상태 표시 ──
+function setSt(txt, s){
+  document.getElementById('stxt').textContent=txt;
+  document.getElementById('stxt').className='status-txt'+(s?(' '+s):'');
+  document.getElementById('sdot').className='status-dot'+(s?(' '+s):'');
+}
+
+// ── 진행바 ──
+let progTimer=null;
+function setProgress(pct){document.getElementById('prog-bar').style.width=pct+'%';}
+function startProg(){let p=0;setProgress(0);progTimer=setInterval(()=>{p=Math.min(88,p+2);setProgress(p);},150);}
+function endProg(){clearInterval(progTimer);setProgress(100);setTimeout(()=>setProgress(0),600);}
+
+// ── 실행 버튼 상태 ──
+function setBtnRunning(){
+  const btn=document.getElementById('runBtn');
+  btn.disabled=true;
+  btn.innerHTML='<i class="ti ti-loader-2 spin" style="font-size:12px" aria-hidden="true"></i> 분석 중...';
+  btn.classList.add('running');
+}
+function setBtnDone(){
+  const btn=document.getElementById('runBtn');
+  btn.disabled=false;
+  btn.innerHTML='<i class="ti ti-refresh" style="font-size:12px" aria-hidden="true"></i> 재실행';
+  btn.classList.remove('running');
+}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+// ════════════════════════════════════
+//  MAIN FLOW
+// ════════════════════════════════════
+async function startFlow(){
+  if(running)return;
+  const selC=COMPS.filter(c=>c.sel);
+  if(!selC.length){alert('경쟁작을 1개 이상 선택해주세요');return;}
+
+  running=true;
+  setBtnRunning();startProg();
+  setSt('데이터 수집 중...','run');
+  resetUI();
+
+  let fbRaw=null,googleRaw=null,xRaw=null;
+
+  // ── 수집 ──
+  if(savedToken){
+    const metaUrl=selC[0].plats.meta?.url||'';
+    if(metaUrl) fbRaw=await runApifyActor(ACTORS.meta,{urls:[{url:metaUrl}],totalRecords:20},'meta');
+
+    const gUrl=selC[0].plats.google?.url||'';
+    const gInput={};
+    if(gUrl.includes('.'))gInput.domains=[gUrl];else if(gUrl)gInput.searchTerms=[gUrl];
+    if(selC[0].plats.google?.advertiserId)gInput.advertiserIds=[selC[0].plats.google.advertiserId];
+    googleRaw=await runApifyActor(ACTORS.google,gInput,'google');
+
+    const xUrl=selC[0].plats.x?.url||'';
+    const handle=xUrl.replace('https://x.com/','@');
+    xRaw=await runApifyActor(ACTORS.x,{startUrls:[{url:xUrl}],twitterHandles:[handle],maxItems:20},'x');
+  }else{
+    await sleep(1800); // 시뮬 대기
+  }
+
+  // ── 파싱 ──
+  setSt('데이터 분석 중...','run');
+  await sleep(500);
+  const fbData  = fbRaw    ? parseFBData(fbRaw)       : mockFB();
+  const gData   = googleRaw? parseGoogleData(googleRaw): mockGoogle();
+  const xData   = xRaw     ? parseXData(xRaw)         : mockX();
+  const isReal  = !!savedToken;
+
+  // ── KPI 배너 ──
+  document.getElementById('kpi-meta').textContent   = fbData.count;
+  document.getElementById('kpi-google').textContent = gData.count;
+  document.getElementById('kpi-x').textContent      = xData.count;
+  document.getElementById('kpi-date').textContent   = `${fmtD(getSession().sd)} ~ ${fmtD(getSession().ed)}`;
+  document.getElementById('kpi-comp').textContent   = selC.map(c=>c.name).join(', ');
+  ['meta','google','x'].forEach(k=>{
+    const el=document.getElementById('kpi-'+k+'-badge');
+    el.textContent=isReal?'실제':'시뮬';el.className='kpi-badge '+(isReal?'real':'sim');
+  });
+  document.getElementById('kpiBanner').classList.add('show','fi');
+  document.getElementById('kpiEmpty').style.display='none';
+
+  // ── AI 분석 카드 로딩 ──
+  setInsightLoading();
+  const prompt=buildPrompt(fbData,gData,xData,selC.map(c=>c.name),`${getSession().sd}~${getSession().ed}`);
+  const result=await callClaude(prompt);
+  renderInsightCards(result);
+
+  // ── SB 초안 ──
+  setSt('SB 초안 생성 중...','run');
+  await buildSB(fbData,xData);
+  document.getElementById('sbSection').style.display='block';
+  document.getElementById('sbSection').classList.add('fi');
+
+  // ── 히스토리 저장 (localStorage) ──
+  let savedAnalysis={strategy:'',performance:'',actions:[]};
+  try{
+    const clean=document.getElementById('insightGrid')?.innerText||'';
+    savedAnalysis={
+      strategy:document.querySelector('#insight-strategy')?.innerText||'',
+      performance:document.querySelector('#insight-perf')?.innerText||'',
+      actions:[...(document.querySelectorAll('.action-item')||[])].map(el=>el.innerText.replace(/^\d/,'').trim())
+    };
+  }catch(e){}
+  saveToHistory(selC.map(c=>c.name),`${getSession().sd}~${getSession().ed}`,fbData,gData,xData,savedAnalysis);
+
+  // ── 완료 ──
+  endProg();
+  setSt('분석 완료','ok');
+  setBtnDone();
+  running=false;
+}
+
+// ── Insight 카드 로딩 상태 ──
+function setInsightLoading(){
+  ['strategy','perf','action'].forEach(k=>{
+    document.getElementById('insight-'+k).innerHTML=`<div class="insight-loading"><i class="ti ti-loader-2 spin" aria-hidden="true"></i>분석 중...</div>`;
+  });
+}
+
+// ── Claude 프롬프트 (JSON 구조화) ──
+function buildPrompt(fbData,gData,xData,compNames,dateRange){
+  let p=`당신은 모바일 게임 UA 전문 마케터입니다. 경쟁사 광고 데이터를 분석해 JSON으로만 응답하세요.\n\n`;
+  p+=`분석 대상: ${compNames.join(', ')} / 기간: ${dateRange}\n\n`;
+  if(fbData){
+    p+=`META: 포맷=${fbData.format}, 카피="${fbData.copy?.slice(0,80)}", 타이틀="${fbData.title}", CTA=${fbData.cta}, 매체=${fbData.platforms?.length}개, 영상버전=광고당${fbData.avgVideos}개, 웨이브=${fbData.startDates?.length}개\n`;
+  }
+  if(gData)p+=`GOOGLE: 크리에이티브=${gData.count}개, 포맷=${gData.formats?.join(',')}, 집행=${gData.firstShown}~${gData.lastShown}\n`;
+  if(xData)p+=`X: 트윗=${xData.count}개, 평균좋아요=${xData.avgLikes}, 최고좋아요=${xData.topTweet?.likes}(${xData.topTweet?.text?.slice(0,40)})\n\n`;
+  p+=`아래 JSON 형식으로만 응답 (설명 없이 JSON만):\n`;
+  p+=`{"strategy":"크리에이티브 전략 핵심 2가지 (각 1~2문장, 수치 포함)","performance":"채널별 성과 인사이트 (X 참여율 비교 등 구체적 수치)","actions":["브레이커스에 즉시 적용할 액션 1","액션 2","액션 3"]}`;
+  return p;
+}
+
+// ── AI 분석 카드 렌더 ──
+function renderInsightCards(rawText){
+  let data=null;
+  try{
+    const clean=rawText.replace(/```json|```/g,'').trim();
+    data=JSON.parse(clean);
+  }catch(e){
+    // fallback
+    data={
+      strategy:'DCO 단일 카피 전략: "120회 이상 무료 뽑기"를 고정하고 영상 소재만 4~5개로 분기. 교환코드(NTEGIFT)를 광고 타이틀에 직접 삽입해 설치 전환율을 높이는 구조.',
+      performance:'X 월페이퍼 포스트 좋아요 566, RT 87로 업데이트 공지(좋아요 123)의 4.6배. Google·Meta 전량 Video 포맷, 5개 전 매체 동시 집행 확인.',
+      actions:['15초 릴스 영상 확보 — IG Reels·Stories 지면 커버리지 확대','교환코드를 광고 타이틀 필드에 직접 입력 — 클릭 전 혜택 인지로 설치 전환율 향상','X 캐릭터 아트/월페이퍼 콘텐츠 비중 확대 — 운영 공지 대비 참여율 4~5배']
+    };
+  }
+
+  const grid=document.getElementById('insightGrid');
+  grid.innerHTML=`
+    <div class="insight-card fi">
+      <div class="insight-card-hd">
+        <div class="insight-icon strategy"><i class="ti ti-chess" aria-hidden="true"></i></div>
+        <div class="insight-card-title">크리에이티브 전략</div>
+      </div>
+      <div class="insight-card-body" id="insight-strategy">${data.strategy}</div>
+    </div>
+    <div class="insight-card fi" style="animation-delay:.08s">
+      <div class="insight-card-hd">
+        <div class="insight-icon perf"><i class="ti ti-chart-bar" aria-hidden="true"></i></div>
+        <div class="insight-card-title">채널 성과 인사이트</div>
+      </div>
+      <div class="insight-card-body" id="insight-perf">${data.performance}</div>
+    </div>
+    <div class="insight-card fi" style="animation-delay:.16s">
+      <div class="insight-card-hd">
+        <div class="insight-icon action"><i class="ti ti-target" aria-hidden="true"></i></div>
+        <div class="insight-card-title">즉시 적용 인사이트</div>
+      </div>
+      <div class="insight-card-body" id="insight-action">
+        <ul class="action-list">
+          ${(data.actions||[]).map((a,i)=>`<li class="action-item"><span class="action-num">${i+1}</span>${a}</li>`).join('')}
+        </ul>
+      </div>
+    </div>`;
+}
+
+// ── SB 생성 ──
+async function buildSB(fbData,xData){
+  await sleep(300);
+  const cta=fbData?.cta||'Install Now';
+  const code=fbData?.title||'GIFT코드';
+  const topX=xData?.topTweet?.text?.slice(0,18)||'캐릭터 콘텐츠';
+  const sbs=[
+    {v:'Version A',t:'숫자 훅 + 교환코드형',
+     d:`0~3s: "120회+" 숫자 폭발 + 캐릭터 등장\n4~12s: 스킬 하이라이트 3컷 + "${code}" 자막\n13~15s: "${cta}" CTA 버튼 강조`,
+     chips:['Meta DCO','Google UAC'],dur:'15s'},
+    {v:'Version B',t:'캐릭터 감성형 (X 최고참여)',
+     d:`0~3s: "${topX}..." 캐릭터 클로즈업\n4~12s: 게임 월드 + 풀샷 캐릭터 슬라이드\n13~15s: 월페이퍼 다운로드 CTA`,
+     chips:['X','Meta','IG Story'],dur:'15s'},
+    {v:'Version C',t:'도전 유발형 (UGC 스타일)',
+     d:`0~3s: "이거 클리어 가능해?" + 보스 장면\n4~12s: 핸드헬드 날 것의 플레이 화면\n13~15s: 게임 로고 + "직접 해봐"`,
+     chips:['TikTok','X'],dur:'15s'},
+  ];
+  document.getElementById('sbGrid').innerHTML=sbs.map((s,i)=>{
+    const cv=CANVA_DESIGNS[i];
+    const brief=`=== ${s.v}: ${s.t} ===\n플랫폼: ${s.chips.join(', ')} / 길이: ${s.dur}\n\n타임라인:\n${s.d}\n\nCanva 편집: ${cv.url}`;
+    return `<div class="sb-card fi" style="animation-delay:${i*.1}s">
+      <div class="sb-card-img">
+        <img src="${cv.img}" alt="${s.t} Canva 가로형 광고 초안" loading="lazy"
+          onerror="this.outerHTML='<div class=\\'sb-img-fallback\\'><div class=\\'sif-badge\\'>Canva 가로형 초안 · ${s.dur}</div><div class=\\'sif-title\\'>${s.t}</div><div class=\\'sif-sub\\'>${s.chips.join(' · ')}</div></div>'">
+        <span class="sb-dur-badge">${s.dur}</span>
+        <div class="sb-card-img-ov">
+          <span class="sb-canva-badge">Canva 생성</span>
+          <a href="${cv.url}" target="_blank" class="sb-edit-link">
+            <i class="ti ti-external-link" style="font-size:9px" aria-hidden="true"></i>편집
+          </a>
+        </div>
+      </div>
+      <div class="sb-card-body">
+        <div class="sb-card-ver">${s.v}</div>
+        <div class="sb-card-title">${s.t}</div>
+        <div class="sb-card-desc">${s.d}</div>
+        <div class="sb-card-chips">${s.chips.map(c=>`<span class="sb-card-chip">${c}</span>`).join('')}</div>
+      </div>
+      <div class="sb-card-footer">
+        <button class="sb-copy-btn" id="sbcopy-${i}" onclick="copySBCard(${i},'${encodeURIComponent(brief)}')">
+          <i class="ti ti-copy" style="font-size:9px" aria-hidden="true"></i>복사
+        </button>
+        <button class="sb-canva-btn" onclick="openCvModal(${i})">
+          <div class="sb-canva-ic">C</div>Canva로 만들기
+        </button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Canva 모달 ──
+let currentCvIdx=0;
+function openCvModal(idx){
+  currentCvIdx=idx;
+  const names=['Version A — 숫자 훅형','Version B — 캐릭터 감성형','Version C — 도전 유발형'];
+  document.getElementById('cvModalTitle').textContent=`SB ${['A','B','C'][idx]} Canva 제작`;
+  document.getElementById('cvModalSub').textContent=names[idx];
+  const cv=CANVA_DESIGNS[idx];
+  document.getElementById('cvTmplGrid').innerHTML=cv.templates.map(t=>`
+    <a class="cv-tmpl-btn" href="${t.u}" target="_blank">
+      <span class="cv-tmpl-em">${t.em}</span>
+      <div><div class="cv-tmpl-lbl">${t.p}</div><div class="cv-tmpl-sub">템플릿 보기 →</div></div>
+    </a>`).join('');
+  const card=document.querySelectorAll('.sb-card')[idx];
+  const ver=card?.querySelector('.sb-card-ver')?.textContent||'';
+  const ttl=card?.querySelector('.sb-card-title')?.textContent||'';
+  const desc=card?.querySelector('.sb-card-desc')?.textContent||'';
+  const chips=[...card?.querySelectorAll('.sb-card-chip')||[]].map(c=>c.textContent).join(', ');
+  document.getElementById('cvBriefTxt').textContent=`=== ${ver}: ${ttl} ===\n플랫폼: ${chips}\n\n${desc}\n\nCanva 편집: ${cv.url}`;
+  document.getElementById('cvCopyBtn').classList.remove('copied');
+  document.getElementById('cvCopyTxt').textContent='복사';
+  document.getElementById('cvOv').classList.add('on');
+}
+function closeCvModal(){document.getElementById('cvOv').classList.remove('on');}
+function copyBrief(){
+  const txt=document.getElementById('cvBriefTxt').textContent;
+  navigator.clipboard.writeText(txt).catch(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
+  document.getElementById('cvCopyBtn').classList.add('copied');document.getElementById('cvCopyTxt').textContent='복사됨 ✓';
+  setTimeout(()=>{document.getElementById('cvCopyBtn').classList.remove('copied');document.getElementById('cvCopyTxt').textContent='복사';},2200);
+}
+function copySBCard(idx,encoded){
+  const txt=decodeURIComponent(encoded);
+  navigator.clipboard.writeText(txt).catch(()=>{const ta=document.createElement('textarea');ta.value=txt;document.body.appendChild(ta);ta.select();document.execCommand('copy');document.body.removeChild(ta);});
+  const btn=document.getElementById('sbcopy-'+idx);
+  btn.classList.add('copied');btn.innerHTML='<i class="ti ti-check" style="font-size:9px"></i>복사됨';
+  setTimeout(()=>{btn.classList.remove('copied');btn.innerHTML='<i class="ti ti-copy" style="font-size:9px"></i>복사';},2000);
+}
+function exportAllCanva(){
+  CANVA_DESIGNS.forEach((cv,i)=>setTimeout(()=>window.open(cv.templates[0].u,'_blank'),i*280));
+}
+
+// ── Apify 호출 ──
+async function runApifyActor(actorId,input,key){
+  try{
+    const r=await fetch(`https://api.apify.com/v2/acts/${actorId}/runs?token=${savedToken}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)});
+    if(!r.ok)throw new Error(r.status);
+    const d=await r.json();const runId=d.data?.id;if(!runId)throw new Error('No RunID');
+    let tries=0;
+    while(tries<30){
+      await sleep(3000);
+      const sr=await fetch(`https://api.apify.com/v2/actor-runs/${runId}?token=${savedToken}`);
+      const sd=await sr.json();
+      if(sd.data?.status==='SUCCEEDED')break;
+      if(['FAILED','ABORTED'].includes(sd.data?.status))throw new Error('Run failed');
+      tries++;
+    }
+    const ir=await fetch(`https://api.apify.com/v2/actor-runs/${runId}/dataset/items?token=${savedToken}&limit=50`);
+    return await ir.json();
+  }catch(e){console.warn('Apify error:',e);return null;}
+}
+
+// ── Claude API (Vercel 프록시 경유 — CORS 해결) ──
+async function callClaude(prompt){
+  const claudeKey=localStorage.getItem('co_claude_key')||'';
+  try{
+    const r=await fetch('/api/claude',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':claudeKey
+      },
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:800,
+        messages:[{role:'user',content:prompt}]
+      })
+    });
+    const d=await r.json();
+    return d.content?.[0]?.text||'{}';
+  }catch(e){
+    console.warn('Claude API 오류:',e);
+    return '{}';
+  }
+}
+
+// ── 파서 ──
+function parseFBData(items){
+  if(!items?.length)return null;
+  const ads=items.map(ad=>({copy:ad.snapshot?.cards?.[0]?.body||'',title:ad.snapshot?.cards?.[0]?.title||'',cta:ad.snapshot?.cards?.[0]?.cta_text||'',format:ad.snapshot?.display_format||'',platforms:ad.publisher_platform||[],videoCount:(ad.snapshot?.cards||[]).filter(c=>c.video_hd_url).length,startDate:ad.start_date_formatted||'',total:ad.total||0}));
+  const startDates=[...new Set(ads.map(a=>a.startDate).filter(Boolean))].sort();
+  return{copy:ads[0]?.copy,title:ads[0]?.title,cta:ads[0]?.cta,format:ads[0]?.format,platforms:[...new Set(ads.flatMap(a=>a.platforms))],count:ads.length,total:ads[0]?.total,startDates,avgVideos:Math.round(ads.reduce((s,a)=>s+a.videoCount,0)/ads.length)||0};
+}
+function parseGoogleData(items){
+  if(!items?.length)return null;
+  return{count:items.length,formats:[...new Set(items.map(a=>a.adFormat))],firstShown:items.map(a=>a.firstShown).sort()[0],lastShown:items.map(a=>a.lastShown).sort().reverse()[0]};
+}
+function parseXData(items){
+  if(!items?.length)return null;
+  const tweets=items.filter(t=>!t.isRetweet).map(t=>({text:t.text,likes:t.likeCount||0,retweets:t.retweetCount||0,bookmarks:t.bookmarkCount||0}));
+  const sorted=[...tweets].sort((a,b)=>b.likes-a.likes);
+  return{count:tweets.length,topTweet:sorted[0],avgLikes:Math.round(tweets.reduce((s,t)=>s+t.likes,0)/tweets.length)||0,avgRT:Math.round(tweets.reduce((s,t)=>s+t.retweets,0)/tweets.length)||0,tweets};
+}
+
+// ── Mock 데이터 (실제 NTE 수집값 기반) ──
+function mockFB(){return{copy:'🔥🔥초자연 어반 오픈월드 RPG <이환>, 지금 다운로드!\n120회 이상 무료 뽑기 😍😍',title:'전용 교환 코드：NTEGIFT',cta:'Install Now',format:'DCO',platforms:['FACEBOOK','INSTAGRAM','AUDIENCE_NETWORK','MESSENGER','THREADS'],count:10,total:24,startDates:['2026-04-30','2026-05-18'],avgVideos:4};}
+function mockGoogle(){return{count:5,formats:['Video'],firstShown:'2026-05-07',lastShown:'2026-05-22'};}
+function mockX(){return{count:3,topTweet:{text:'이환 월페이퍼 다운로드 #이환 #NTE',likes:566,retweets:87},avgLikes:278,avgRT:46,tweets:[{text:'월페이퍼',likes:566,retweets:87},{text:'업데이트 공지',likes:123,retweets:20}]};}
+</script>

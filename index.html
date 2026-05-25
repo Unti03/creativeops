@@ -1,10 +1,9 @@
-<!-- CreativeOps v1.3 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/dist/tabler-icons.min.css">
 <style>
-/* ══════════════════════════════════════
+/* ======================================
    CreativeOps Intelligence v1.0
    Executive Dashboard — Clean Design
-══════════════════════════════════════ */
+====================================== */
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --navy:#0F1C35;--blue:#1B6FD9;--blue-l:#EBF4FF;--blue-m:#60A5FA;--blue-d:#1E3A8A;
@@ -324,9 +323,9 @@ body,html{font-family:-apple-system,BlinkMacSystemFont,'Pretendard','Segoe UI',s
 /* ── 분석 분리선 ── */
 .analysis-sep{height:1px;background:var(--gray-100);margin:0 -20px}
 
-/* ══════════════════════════════════════
+/* ======================================
    ADMIN SLIDE PANEL
-══════════════════════════════════════ */
+====================================== */
 .admin-backdrop{
   display:none;position:fixed;inset:0;background:rgba(10,15,40,.4);
   z-index:800;backdrop-filter:blur(1px)
@@ -619,7 +618,7 @@ body,html{font-family:-apple-system,BlinkMacSystemFont,'Pretendard','Segoe UI',s
 
 </style>
 
-<!-- ══════════ APP SHELL ══════════ -->
+<!-- ========== APP SHELL ========== -->
 <div class="app">
   <!-- 진행 바 -->
   <div id="prog-bar"></div>
@@ -1033,14 +1032,14 @@ body,html{font-family:-apple-system,BlinkMacSystemFont,'Pretendard','Segoe UI',s
 </div><!-- /app -->
 
 <script>
-// ══════════════════════════════════════
+// ======================================
 //  CreativeOps Intelligence v1.0
 //  Executive Dashboard
-// ══════════════════════════════════════
+// ======================================
 
-// ══════════════════════════════════════
+// ======================================
 //  ADMIN PANEL
-// ══════════════════════════════════════
+// ======================================
 const COMP_COLORS=['#3B82F6','#10B981','#8B5CF6','#F59E0B','#EF4444'];
 
 const ADMIN_PW = '1234';
@@ -1290,9 +1289,9 @@ function testNotify(type){
   showToast(`${type==='discord'?'Discord':'이메일'} 테스트 발송 완료 (실제 연동 시 활성화)`);
 }
 
-// ══════════════════════════════════════
+// ======================================
 //  리포트 히스토리 (localStorage)
-// ══════════════════════════════════════
+// ======================================
 const HISTORY_KEY='co_reports';
 
 function saveToHistory(compNames,period,fbData,gData,xData,analysisData){
@@ -1519,9 +1518,9 @@ function hideError(){
   document.getElementById('errorBanner').classList.remove('show');
 }
 
-// ════════════════════════════════════
+// ====================================
 //  MAIN FLOW
-// ════════════════════════════════════
+// ====================================
 async function startFlow(){
   if(running)return;
   const selC=COMPS.filter(c=>c.sel);
@@ -1608,8 +1607,6 @@ async function _runFlow(selC){
   setSt('분석 완료','ok');
   setBtnDone();
   running=false;
-}
-
 }
 
 // ── Insight 카드 로딩 상태 ──
